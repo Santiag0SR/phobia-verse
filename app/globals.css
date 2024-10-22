@@ -2,26 +2,219 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Estilo para las arañas */
+.spider-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.spider {
+  width: 40px;
+  height: 40px;
+  background: url("/spider-icon.png") no-repeat center;
+  background-size: contain;
+  position: absolute;
+  animation: spiderMove 10s linear infinite;
+}
+
+/* Animación de las arañas */
+@keyframes spiderMove {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(200px) rotate(180deg);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+/* Goteo de sangre mejorado y distribuido */
+.blood-drip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Cobertura completa */
+  overflow: hidden;
+}
+
+/* Gotas individuales distribuidas a lo largo del ancho de la pantalla */
+.blood-drip::before,
+.blood-drip::after,
+.blood-drip .drop1,
+.blood-drip .drop2,
+.blood-drip .drop3 {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 50px;
+  background: red;
+  border-radius: 50%;
+  animation: dripSlow 5s infinite ease-in-out;
+}
+
+/* Varias gotas en diferentes posiciones */
+.blood-drip::before {
+  left: 20%; /* 20% desde la izquierda */
+  animation-duration: 6s;
+}
+.blood-drip::after {
+  left: 50%; /* 50% desde la izquierda */
+  animation-duration: 5s;
+}
+.blood-drip .drop1 {
+  left: 30%; /* 30% desde la izquierda */
+  animation-duration: 7s;
+}
+.blood-drip .drop2 {
+  left: 70%; /* 70% desde la izquierda */
+  animation-duration: 4.5s;
+}
+.blood-drip .drop3 {
+  left: 90%; /* 90% desde la izquierda */
+  animation-duration: 6.5s;
+}
+
+/* Animación de goteo lento */
+@keyframes dripSlow {
+  0% {
+    top: -50px;
+    opacity: 1;
+  }
+  100% {
+    top: 100vh;
+    opacity: 0;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Contenedor para los payasos */
+.clown-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 2; /* Se asegura de que estén por encima del fondo */
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Estilo común para los payasos */
+.clown-left,
+.clown-right,
+.clown-bottom {
+  width: 250px;
+  height: 250px;
+  background: url("/clown-icon.png") no-repeat center; /* Imagen de payaso */
+  background-size: contain;
+  position: absolute;
+}
+
+/* Payaso que aparece desde la izquierda - mira hacia la derecha */
+.clown-left {
+  left: -60px; /* Fuera del borde izquierdo */
+  transform: rotate(90deg); /* Mira hacia la derecha */
+  animation: clownLeftMove 10s ease-in-out forwards;
+}
+
+/* Payaso que aparece desde la derecha - mira hacia la izquierda */
+.clown-right {
+  right: -60px; /* Fuera del borde derecho */
+  transform: rotate(
+    -90deg
+  ); /* Se invierte horizontalmente para que mire hacia la izquierda */
+  animation: clownRightMove 6s ease-in-out forwards;
+}
+
+/* Payaso que aparece desde el borde inferior - mira hacia arriba */
+.clown-bottom {
+  bottom: -60px; /* Fuera del borde inferior */
+  animation: clownBottomMove 6s ease-in-out forwards;
+}
+
+/* Animación para payasos que aparecen desde la izquierda */
+@keyframes clownLeftMove {
+  0% {
+    left: -60px;
+    opacity: 0;
+  }
+  10% {
+    left: 0;
+    opacity: 1;
+  }
+  90% {
+    left: 0;
+    opacity: 1;
+  }
+  100% {
+    left: -60px;
+    opacity: 0;
+  }
+}
+
+/* Animación para payasos que aparecen desde la derecha */
+@keyframes clownRightMove {
+  0% {
+    right: -60px;
+    opacity: 0;
+  }
+  10% {
+    right: 0;
+    opacity: 1;
+  }
+  90% {
+    right: 0;
+    opacity: 1;
+  }
+  100% {
+    right: -60px;
+    opacity: 0;
+  }
+}
+
+/* Animación para payasos que aparecen desde el borde inferior */
+@keyframes clownBottomMove {
+  0% {
+    bottom: -60px;
+    opacity: 0;
+  }
+  10% {
+    bottom: 0;
+    opacity: 1;
+  }
+  90% {
+    bottom: 0;
+    opacity: 1;
+  }
+  100% {
+    bottom: -60px;
+    opacity: 0;
+  }
+}
+
+.rain-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden; /* Prevent raindrops from overflowing the container */
+}
+
+.raindrop {
+  position: absolute;
+  top: -20px; /* Start raindrops slightly off-screen */
+  width: 1px;
+  height: 8px; /* Make raindrops slightly taller */
+  background: rgba(255, 255, 255, 0.8); /* Light rain color */
+  opacity: 0.6;
+  animation: diagonalFall 3s linear infinite; /* Ensure the animation is running */
+}
+
+@keyframes diagonalFall {
+  0% {
+    transform: translateX(0) translateY(0); /* Raindrop starts at its initial position */
+  }
+  100% {
+    transform: translateX(10vw) translateY(100vh); /* Raindrop moves diagonally to the right while falling */
   }
 }
