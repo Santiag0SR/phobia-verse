@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.1.10",
+    "@heroicons/react": "^2.1.5",
     "cloudinary": "^2.5.1",
     "next": "14.2.15",
     "next-cloudinary": "^6.15.0",

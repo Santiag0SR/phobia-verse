@@ -7,6 +7,7 @@ const UploadPage = () => {
   const [file, setFile] = useState(null); // Store the uploaded image file
   const [uploadedFile, setUploadedFile] = useState(null); // Store the result of the uploaded image
   const [backgroundType, setBackgroundType] = useState(""); // Default to arachnophobia
+  const [tempBackgroundType, setTempBackgroundType] = useState(""); // Holds temporary selected value
   const [imageUrl, setImageUrl] = useState(null); // The transformed image with background
   const [loading, setLoading] = useState(false);
   const [transformationStarted, setTransformationStarted] = useState(false);
@@ -14,7 +15,6 @@ const UploadPage = () => {
   const [seed, setSeed] = useState(1); // Initialize seed with 1
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal open/close state
   const [isModalOpen2, setIsModalOpen2] = useState(false); // Modal open/close state
-  let [isOpen, setIsOpen] = useState(false);
 
   const [currentModalImage, setCurrentModalImage] = useState(null); // Track which image to show in the modal
 
@@ -127,15 +127,9 @@ const UploadPage = () => {
       },
   };
 
-  // useEffect(() => {
-  //   // Reset phobia image visibility whenever the phobia is changed
-  //   setShowPhobiaImage(true);
-  //   const timer = setTimeout(() => setShowPhobiaImage(false), 3000); // Hide after 3 seconds
-  //   return () => clearTimeout(timer);
-  // }, [backgroundType]);
-
   const handleImageUpload = async (selectedFile) => {
     setUploadedFile(null);
+    setImageUrl(null);
     setLoading(true);
     setError(null);
 
@@ -183,15 +177,18 @@ const UploadPage = () => {
       return;
     }
 
+    // Update backgroundType when form is submitted
+    setBackgroundType(tempBackgroundType);
+
     const res = await fetch("/api/background", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        data: uploadedFile, // Use the uploaded image file
-        backgroundType,
-        seed, // Apply the selected background
+        data: uploadedFile,
+        backgroundType: tempBackgroundType, // Use the temporary selection
+        seed,
       }),
     });
 
@@ -241,10 +238,10 @@ const UploadPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[url(/fondoManicomio2.webp)] bg-cover bg-no-repeat bg-center">
-      <div className="bg-black/70 p-2 sm:p-10 rounded-md z-10 animate-fadeInTitle">
-        <h1 className="  animate-fadeInTitle text-lg md:text-3xl font-bold mb-4 text-gray-300 text-center max-w-2xl">
-          Upload your photo, <br />
-          <span className="font-spooky2 text-red-700">
+      <div className="bg-black/70 p-2 sm:p-10 rounded-md z-10 animate-fadeInTitle flex flex-col justify-center items-center">
+        <h1 className=" animate-fadeInTitle text-lg md:text-3xl font-bold mb-4 text-gray-300 text-center max-w-2xl">
+          Upload your photo <br />
+          <span className="font-spooky2 text-red-700 text-2xl md:text-5xl">
             {" "}
             bring your phobias to life!
           </span>
@@ -255,7 +252,9 @@ const UploadPage = () => {
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onClick={handleClick} // Handle click to open file input
-          className="border-2 border-dashed border-gray-400 p-6 text-center bg-gray-100 hover:bg-gray-200 cursor-pointer max-w-xs sm:max-w-md mx-auto rounded-md"
+          className={`border-2 border-dashed border-gray-400 p-6 text-center  bg-gray-100 hover:bg-gray-200 cursor-pointer max-w-xs sm:max-w-md mx-auto rounded-md ${
+            uploadedFile ? " opacity-30 p-1 hover:opacity-100" : ""
+          }`}
         >
           {file ? (
             <p className="text-black truncate">{file.name}</p>
@@ -274,21 +273,30 @@ const UploadPage = () => {
           />
         </div>
         {loading && (
-          <p className="mt-4 text-white ">
-            Processing your image, please wait...
-          </p>
+          <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+          </div>
         )}
 
         {uploadedFile && (
           <div className="flex flex-col md:flex-row mt-4">
             <div className="flex flex-col justify-center items-center max-w-32 mx-auto">
-              <img
-                src={uploadedFile}
-                alt="Uploaded"
-                className=" w-28 h-28 object-cover border-2 border-gray-400"
-                onClick={() => openModal(uploadedFile)} // Open the modal with the uploaded image
-              />
-              <p className="text-gray-300">Image uploaded successfully!</p>
+              <div className="relative">
+                <img
+                  src={uploadedFile}
+                  alt="Uploaded"
+                  className=" w-28 h-28 object-cover border-2"
+                  onClick={() => openModal(uploadedFile)} // Open the modal with the uploaded image
+                />
+                <img
+                  src="./check-icon.png"
+                  alt="Uploaded"
+                  className="absolute -top-3 -left-3 w-8 h-8 object-cover"
+                />
+              </div>
+              {/* <p className="text-green-900 text-base">Upload successful!</p> */}
             </div>
 
             <form
@@ -296,9 +304,9 @@ const UploadPage = () => {
               className="flex flex-col space-y-4 mt-4 w-full ml-0 md:ml-4"
             >
               <select
-                value={backgroundType}
-                onChange={(e) => setBackgroundType(e.target.value)}
-                className="p-2 border"
+                value={tempBackgroundType} // Show the currently selected phobia
+                onChange={(e) => setTempBackgroundType(e.target.value)} // Update temporary selection
+                className="p-2 border opacity-80 rounded"
                 required
               >
                 <option value="" disabled>
@@ -353,23 +361,30 @@ const UploadPage = () => {
 
               <button
                 type="submit"
-                className="bg-red-800 text-white p-2 rounded"
+                className={`bg-red-800 text-white p-2 rounded ${
+                  loading && "bg-zinc-600 pointer-events-none"
+                }`}
               >
-                Apply phobia!
+                {loading ? " Applying phobia... " : "Apply phobia"}
               </button>
             </form>
           </div>
         )}
         {imageUrl && (
-          <div className="mt-4 flex flex-col-reverse sm:flex-row">
+          <div className="mt-4 flex flex-col-reverse md:flex-row justify-center items-center md:items-start">
             <div className="sm:mr-5 flex flex-col">
-              <div>
-                <p className="text-white">Transformation successful!</p>
+              <div className="relative mt-4">
+                {/* <p className="text-green-900">Transformation successful!</p> */}
                 <img
                   src={imageUrl}
                   alt="Transformed image"
-                  className="w-full max-w-xs"
+                  className="w-full max-w-sm md:max-w-2xl"
                   onClick={() => openModal(imageUrl)} // Open the modal with the uploaded image
+                />
+                <img
+                  src="./check-icon.png"
+                  alt="Uploaded"
+                  className="absolute -top-3 -left-3 w-8 h-8 object-cover"
                 />
               </div>
               <a
@@ -393,45 +408,57 @@ const UploadPage = () => {
         )}
         {isModalOpen2 && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center items-center h-full w-full overflow-auto"
+            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex justify-center h-full w-full overflow-auto"
             onClick={() => setIsModalOpen2(false)} // Close the modal when clicking outside
           >
             <div
-              className="relative w-full flex flex-col pt-10 pb-10 mx-auto p-4  rounded-lg overflow-auto"
+              className="relative w-full flex flex-col justify-start pb-10 mx-auto p-4  rounded-lg overflow-auto"
               onClick={(e) => e.stopPropagation()} // Prevent closing the modal when clicking inside
               style={{maxHeight: "100vh"}} // Ensure the modal content is constrained within the viewport
             >
               <button
-                className="sm:absolute top-5 right-10 text-white text-xs bg-red-800 px-4 py-2 rounded"
+                className="sm:fixed top-5 right-10 text-white text-xs bg-red-800 px-4 py-2 rounded z-10"
                 onClick={closeModal} // Close the modal
               >
                 Close
               </button>
               {transformationStarted && (
                 <div className="flex flex-col justify-center text-center">
-                  <h3 className="mt-4 text-white text-2xl">
+                  <h3 className="mt-4 text-white text-xl sm:text-3xl opacity-0 animate-fadeInTitle2">
                     {phobiaData[backgroundType]?.name}
                   </h3>
-                  <p className="mt-4 text-white max-w-4xl mx-auto">
+                  <p className="mt-4 text-white text-base sm:text-lg max-w-4xl mx-auto opacity-0 animate-fadeInTitle3">
                     {phobiaData[backgroundType]?.description}
                   </p>
                 </div>
               )}
               {loading && (
-                <p className="mt-4 text-white">
-                  Processing your image, please wait...
-                </p>
+                // <p className="mt-4 text-white mx-auto">
+                //   Processing your image, please wait...
+                // </p>
+                <div class="spinner">
+                  <div class="bounce1"></div>
+                  <div class="bounce2"></div>
+                  <div class="bounce3"></div>
+                </div>
               )}
               {error && <p className="mt-4 text-red-500">{error}</p>}
 
               {imageUrl && (
                 <div className="mt-4 flex flex-col items-center justify-center">
-                  <p className="text-white">Transformation successful!</p>
-                  <img
-                    src={imageUrl}
-                    alt="Transformed image"
-                    className="w-full max-w-2xl"
-                  />
+                  {/* <p className="text-green-900">Transformation successful!</p> */}
+                  <div className="relative mt-5">
+                    <img
+                      src={imageUrl}
+                      alt="Transformed image"
+                      className="w-full max-w-2xl"
+                    />
+                    <img
+                      src="./check-icon.png"
+                      alt="Uploaded"
+                      className="absolute -top-3 -left-3 w-8 h-8 object-cover"
+                    />
+                  </div>
                 </div>
               )}
               <div className="flex flex-row justify-center items-center mb-10">
@@ -461,7 +488,7 @@ const UploadPage = () => {
         </div>
       )} */}
 
-      <div className="fixed inset-0 h-full w-full bg-black animate-fadeIn"></div>
+      <div className="fixed inset-0 h-full w-full bg-black animate-fadeIn2"></div>
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-80 z-50 flex justify-center items-center"

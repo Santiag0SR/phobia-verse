@@ -68,15 +68,15 @@ export default function Home() {
 
       <Link
         href="/upload"
-        className=" bg-zinc-800 hover:bg-zinc-600 text-white p-4 rounded-lg text-2xl md:text-4xl z-10 shadow-2xl animate-fadeInTitle"
+        className=" bg-zinc-800 hover:bg-zinc-600 text-white p-4 rounded-lg  z-10 shadow-2xl animate-fadeInTitle"
       >
-        Enter the assylum
+        <p className="animate-pulse text-xl md:text-3xl font-bold">ENTER</p>
       </Link>
 
       {/* <div className="spider-container absolute inset-0"></div>
       <div className="blood-drip absolute top-0 left-0 w-full h-10"></div>
       <div className="clown-container absolute inset-0"></div> */}
-      <div className="absolute inset-0 h-full w-full bg-black animate-fadeIn"></div>
+      <div className="absolute inset-0 h-full w-full bg-black animate-fadeIn2"></div>
       <div className="rain-container absolute inset-0 pointer-events-none"></div>
     </div>
   );

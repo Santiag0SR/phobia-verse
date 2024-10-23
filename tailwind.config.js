@@ -16,7 +16,7 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       keyframes: {
-        fadeIn: {
+        fadeIn2: {
           "0%": {backgroundColor: "rgba(0, 0, 0, 1)"},
           "100%": {backgroundColor: "rgba(0, 0, 0, 0.4)"},
         },
@@ -30,8 +30,10 @@ module.exports = {
         },
       },
       animation: {
-        fadeIn: "fadeIn 4s ease-in-out forwards", // 4 seconds animation
+        fadeIn2: "fadeIn2 4s ease-in-out forwards", // 4 seconds animation
         fadeInTitle: "fadeInTitle 4s ease-out forwards", // 2 seconds animation
+        fadeInTitle2: "fadeInTitle 5s ease-in forwards", // 2 seconds animation
+        fadeInTitle3: "fadeInTitle 5s ease-in forwards 2s", // 2 seconds animation
         fadeOut: "fadeOut 3s ease-out forwards", // 2 seconds animation
       },
     },
