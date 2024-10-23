@@ -32,6 +32,7 @@
     transform: translateY(0) rotate(360deg);
   }
 }
+
 /* Goteo de sangre mejorado y distribuido */
 .blood-drip {
   position: absolute;

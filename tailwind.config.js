@@ -20,14 +20,19 @@ module.exports = {
           "0%": {backgroundColor: "rgba(0, 0, 0, 1)"},
           "100%": {backgroundColor: "rgba(0, 0, 0, 0.4)"},
         },
+        fadeOut: {
+          "100%": {opacity: "0"},
+          "0%": {opacity: "1"},
+        },
         fadeInTitle: {
-          "0%": {opacity: "0", transform: "translateY(40px)"},
-          "100%": {opacity: "1", transform: "translateY(0)"},
+          "0%": {opacity: "0"},
+          "100%": {opacity: "1"},
         },
       },
       animation: {
         fadeIn: "fadeIn 4s ease-in-out forwards", // 4 seconds animation
         fadeInTitle: "fadeInTitle 4s ease-out forwards", // 2 seconds animation
+        fadeOut: "fadeOut 3s ease-out forwards", // 2 seconds animation
       },
     },
   },

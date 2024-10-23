@@ -27,7 +27,7 @@ export default function RootLayout({children}) {
   return (
     <html lang="en">
       <body
-        className={`${rubik.variable} ${nosifer.variable} ${inter.className}`}
+        className={`${rubik.variable} ${nosifer.variable} ${inter.className} bg-black `}
       >
         {children}
       </body>

@@ -38,23 +38,6 @@ export default function Home() {
   //   }, 5000);
   // };
 
-  // // Usamos useEffect para añadir las arañas cuando la página cargue
-  // useEffect(() => {
-  //   createSpiders();
-  // }, []);
-
-  // // Función para generar arañas y posicionarlas al azar
-  // const createSpiders = () => {
-  //   const spiderContainer = document.querySelector(".spider-container");
-  //   for (let i = 0; i < 10; i++) {
-  //     const spider = document.createElement("div");
-  //     spider.classList.add("spider");
-  //     spider.style.left = `${Math.random() * 100}vw`; // Posición horizontal aleatoria
-  //     spider.style.top = `${Math.random() * 100}vh`; // Posición vertical aleatoria
-  //     spiderContainer.appendChild(spider);
-  //   }
-  // };
-
   useEffect(() => {
     createRain(); // Start generating raindrops
   }, []);
@@ -73,19 +56,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-around bg-[url(/fondoManicomioCasa.webp)] bg-cover bg-no-repeat relative">
-      <div className="z-10 flex flex-col items-center justify-center">
-        <h1 className="text-red-800 drop-shadow-2xl shadow-black text-8xl font-bold z-10 font-spooky2 bg-none animate-fadeInTitle ">
+    <div className="min-h-screen flex flex-col items-center justify-around bg-[url(/fondoManicomioCasa.webp)] bg-cover bg-no-repeat bg-center relative text-center">
+      <div className="z-10 flex flex-col items-center justify-center p-6">
+        <h1 className="text-red-800 drop-shadow-2xl shadow-black text-5xl sm:text-6xl md:text-8xl font-bold z-10 font-spooky2 bg-none animate-fadeInTitle ">
           Phobia verse
         </h1>
-        <p className="text-[#D8D8D8] drop-shadow-2xl shadow-black text-4xl font-bold z-10 bg-none animate-fadeInTitle font-sans ">
+        <p className="text-[#D8D8D8] drop-shadow-2xl shadow-black text-2xl md:text-4xl font-bold z-10 bg-none animate-fadeInTitle font-sans ">
           ¡Discover and experiment with your fears!
         </p>
       </div>
 
       <Link
         href="/upload"
-        className=" bg-zinc-800 hover:bg-zinc-600 text-white p-4 rounded-lg text-4xl z-10 shadow-2xl animate-fadeInTitle"
+        className=" bg-zinc-800 hover:bg-zinc-600 text-white p-4 rounded-lg text-2xl md:text-4xl z-10 shadow-2xl animate-fadeInTitle"
       >
         Enter the assylum
       </Link>
