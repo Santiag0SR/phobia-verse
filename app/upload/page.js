@@ -369,7 +369,7 @@ const UploadPage = () => {
                   src={imageUrl}
                   alt="Transformed image"
                   className="w-full max-w-xs"
-                  // onClick={(setIsModalOpen2(true))} // Open the modal with the transformed image
+                  onClick={() => openModal(imageUrl)} // Open the modal with the uploaded image
                 />
               </div>
               <a
